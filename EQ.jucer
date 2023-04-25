@@ -14,6 +14,15 @@
       <FILE id="pPuilg" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="wxJncB" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="Wwg4Fm" name="WaveThumbnail.cpp" compile="1" resource="0"
+            file="Source/WaveThumbnail.cpp"/>
+      <FILE id="IQMnZF" name="WaveThumbnail.h" compile="0" resource="0" file="Source/WaveThumbnail.h"/>
+      <FILE id="idnUdr" name="ADSRComponent.cpp" compile="1" resource="0"
+            file="Source/ADSRComponent.cpp"/>
+      <FILE id="cJUopG" name="ADSRComponent.h" compile="0" resource="0" file="Source/ADSRComponent.h"/>
+    </GROUP>
+    <GROUP id="{D1B071A5-0BCB-771E-C4B1-B4694C82F7A6}" name="Resources">
+      <FILE id="VDLbq9" name="Logo.png" compile="0" resource="1" file="Resources/Logo.png"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

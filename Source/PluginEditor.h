@@ -10,28 +10,35 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "WaveThumbnail.h"
+#include "ADSRComponent.h"
 
 //==============================================================================
 /**
 */
-class EQAudioProcessorEditor  : public juce::AudioProcessorEditor,
-                                public juce::FileDragAndDropTarget
+class EQAudioProcessorEditor  : public juce::AudioProcessorEditor
+                                                              
 {
 public:
     EQAudioProcessorEditor (EQAudioProcessor&);
-    ~EQAudioProcessorEditor() override;
+    ~EQAudioProcessorEditor();
     
 
     //==============================================================================
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    bool isInterestedInFileDrag (const juce::StringArray& files) override;
-
-    void filesDropped (const juce::StringArray& files, int x, int y) override;
+   
+    
     
 private:
-    juce::TextButton mLoadButton {"Load"};
+   
+    WaveThumbnail mWaveThumbnail;
+    
+    ADSRComponent mADSR;
+    
+    juce::ImageComponent mImageComponent;
+    
     EQAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EQAudioProcessorEditor)

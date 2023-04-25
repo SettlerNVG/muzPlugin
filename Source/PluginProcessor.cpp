@@ -99,6 +99,8 @@ void EQAudioProcessor::changeProgramName (int index, const juce::String& newName
 void EQAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
     mSampler.setCurrentPlaybackSampleRate(sampleRate);
+    
+    updateADSR();
 }
 
 void EQAudioProcessor::releaseResources()
@@ -138,8 +140,7 @@ void EQAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::Mid
     juce::ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
     auto totalNumOutputChannels = getTotalNumOutputChannels();
-
-
+    
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
     mSampler.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
@@ -192,13 +193,30 @@ void EQAudioProcessor::loadFile (const juce::String& path)
     mSampler.clearSounds () ;
     auto file = juce::File (path);
     mFormatReader = mFormatManager. createReaderFor (file);
+    
+    auto sampleLength = static_cast<int>(mFormatReader->lengthInSamples);
+    
+    mWaveForm.setSize(1, sampleLength);
+    mFormatReader -> read(&mWaveForm, 0,sampleLength, 0, true, false); //waveform has data
 
+    //auto buffer = mWaveForm.getReadPointer(0);
+    
+    
     juce::BigInteger range;
     range. setRange (0, 128, true);
 
     mSampler.addSound (new juce::SamplerSound ("Sample", *mFormatReader, range, 60, 0.1, 0.1, 10.0));
 }
 
+void EQAudioProcessor::updateADSR()
+{
+    for (int i = 0; i<mSampler.getNumSounds();i++)
+    {
+        if(auto sound = dynamic_cast<juce::SamplerSound*>(mSampler.getSound(i).get()))//gets a sound of class from synthesizer of local class samplerSound == Synthesizer
+        {
+            sound->setEnvelopeParameters(mADSRParams);
+        }
+    }}
 //==============================================================================
 // This creates new instances of the plugin..
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
